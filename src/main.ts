@@ -48,7 +48,7 @@ import { doSessionJoin } from './app/doSessionJoin';
         }
         (async () => {
             try {
-                let session = await doSessionGet(body.data.id);
+                let session = await doSessionGet(body.data.id, body.data.token);
                 res.send({ ok: true, session });
             } catch (e) {
                 console.warn(e);
@@ -91,7 +91,8 @@ const schemaCreate = z.object({
 });
 
 const schemaGet = z.object({
-    id: z.string()
+    id: z.string(),
+    token: z.string(),
 });
 const schemaJoin = z.object({
     id: z.string(),

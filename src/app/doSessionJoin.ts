@@ -1,6 +1,6 @@
 import { inTx } from "./inTx";
 
-export async function doSessionJoin(id: string, joinToken: string, side: 'a' | 'b'): Promise<{ ok: true } | { ok: false, message: string }> {
+export async function doSessionJoin(id: string, token: string, side: 'a' | 'b'): Promise<{ ok: true } | { ok: false, message: string }> {
     return await inTx(async (tx) => {
 
         // Load session
@@ -14,7 +14,7 @@ export async function doSessionJoin(id: string, joinToken: string, side: 'a' | '
 
         // Repeat protection
         let existingToken = side === 'a' ? session.joinTokenA : session.joinTokenB;
-        if (existingToken === joinToken) {
+        if (existingToken === token) {
             return {
                 ok: true
             };
@@ -30,9 +30,9 @@ export async function doSessionJoin(id: string, joinToken: string, side: 'a' | '
 
         // Update token
         if (side === 'a') {
-            session.joinTokenA = joinToken;
+            session.joinTokenA = token;
         } else {
-            session.joinTokenB = joinToken;
+            session.joinTokenB = token;
         }
 
         // Change state

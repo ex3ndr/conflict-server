@@ -1,5 +1,5 @@
 import express from 'express';
-import { startDB } from './app/db';
+import { startDB } from '@/app/db';
 
 (async () => {
 
@@ -17,6 +17,9 @@ import { startDB } from './app/db';
         res.send('Welcome to Conflict AI server!');
     });
     app.post('/session/create', (req, res) => {
+        res.send('Session created!');
+    });
+    app.post('/session/join', (req, res) => {
         res.send('Session created!');
     });
     app.post('/session/state', (req, res) => {

@@ -16,3 +16,36 @@ model SyncState {
 
   @@map("sync_state")
 }
+
+enum SessionState {
+  CREATED
+  JOINED
+  STARTED
+  FINISHED
+}
+
+model Session {
+  id Int @id @default(autoincrement())
+  uid String @unique
+  repeatKey String @unique
+  createdAt DateTime @default(now())
+
+  // Side A
+  nameA String
+  joinedA Boolean @default(false)
+
+  // Side B
+  nameB String
+  joinedB Boolean @default(false)
+
+  // Description
+  description String
+
+  // Started
+  state SessionState @default(CREATED)
+
+  // If AI response is needed
+  needAI Boolean @default(false)
+
+  @@map("session")
+}

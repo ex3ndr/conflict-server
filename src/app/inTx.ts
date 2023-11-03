@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client";
-import { db } from "./db";
+import { db } from "@/app/db";
 
 export type Tx = Prisma.TransactionClient;
 

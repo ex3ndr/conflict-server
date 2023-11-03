@@ -1,9 +1,9 @@
 import { tryLock } from "./tryLock";
 import { backoff, delay } from "../../utils/time";
-import * as crypto from 'crypto';
+import { randomKey } from "@/utils/randomKey";
 
 export function workInLock(lockKey: string, worker: () => Promise<void>, options?: { lockDelay?: number }) {
-    const key = crypto.randomBytes(32).toString('hex');
+    const key = randomKey();
     backoff(async () => {
         while (true) {
 

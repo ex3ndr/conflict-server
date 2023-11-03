@@ -8,8 +8,10 @@
     "build": "rm -fr build && tsc",
     "start": "node --enable-source-maps ./build/main.js",
     "dev": "yarn build && yarn start",
+    "migrate": "prisma migrate dev",
     "generate": "prisma generate",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "db": "docker run -e POSTGRES_PASSWORD=postgres -v $(pwd)/.pgdata:/var/lib/postgresql/data -p 5432:5432 postgres:15"
   },
   "dependencies": {
     "@prisma/client": "5.5.2",

@@ -2,6 +2,7 @@ import express from 'express';
 import { startDB } from './app/db';
 import * as z from 'zod';
 import { doSessionCreate } from './app/doSessionCreate';
+import { doSessionGet } from './app/doSessionGet';
 
 (async () => {
 
@@ -38,10 +39,23 @@ import { doSessionCreate } from './app/doSessionCreate';
             }
         })();
     });
-    app.post('/session/join', (req, res) => {
-        res.send('Session created!');
-    });
     app.post('/session/state', (req, res) => {
+        let body = schemaGet.safeParse(req.body);
+        if (!body.success) {
+            res.status(400).send({ ok: false, message: 'Invalid request' });
+            return;
+        }
+        (async () => {
+            try {
+                let session = await doSessionGet(body.data.id);
+                res.send({ ok: true, session });
+            } catch (e) {
+                console.warn(e);
+                res.status(500).send('Internal error');
+            }
+        })();
+    });
+    app.post('/session/join', (req, res) => {
         res.send('Session created!');
     });
 
@@ -56,4 +70,8 @@ const schemaCreate = z.object({
     nameA: z.string(),
     nameB: z.string(),
     description: z.string(),
+});
+
+const schemaGet = z.object({
+    id: z.string()
 });

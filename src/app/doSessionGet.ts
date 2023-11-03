@@ -8,15 +8,26 @@ export async function doSessionGet(id: string) {
         };
     }
 
-    // Just created or awaiting for AI
-    if (res.state === 'CREATED' || res.state === 'JOINED') {
+    // Awaiting participants
+    if (res.state === 'CREATED') {
         return {
-            state: res.state === 'CREATED' ? 'awaiting' : 'starting',
+            state: 'awaiting',
             createdAt: Math.floor(res.createdAt.getTime() / 1000),
             nameA: res.nameA,
             joinedA: res.joinedA,
             nameB: res.nameB,
             joinedB: res.joinedB,
+            description: res.description
+        };
+    }
+
+    // Starting chat
+    if (res.state === 'JOINED') {
+        return {
+            state: 'starting',
+            createdAt: Math.floor(res.createdAt.getTime() / 1000),
+            nameA: res.nameA,
+            nameB: res.nameB,
             description: res.description
         };
     }

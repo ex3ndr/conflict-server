@@ -33,6 +33,7 @@ import { doSessionCreate } from './app/doSessionCreate';
                     res.send(res);
                 }
             } catch (e) {
+                console.warn(e);
                 res.status(500).send('Internal error');
             }
         })();

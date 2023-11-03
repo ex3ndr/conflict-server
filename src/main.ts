@@ -26,11 +26,11 @@ import { doSessionCreate } from './app/doSessionCreate';
         }
         (async () => {
             try {
-                let res = await doSessionCreate({ nameA: body.data.nameA, nameB: body.data.nameB, description: body.data.description, repeatKey: body.data.repeatKey });
-                if (!res.ok) {
-                    res.status(422).send(res);
+                let result = await doSessionCreate({ nameA: body.data.nameA, nameB: body.data.nameB, description: body.data.description, repeatKey: body.data.repeatKey });
+                if (!result.ok) {
+                    res.status(422).send(result);
                 } else {
-                    res.send(res);
+                    res.send(result);
                 }
             } catch (e) {
                 console.warn(e);

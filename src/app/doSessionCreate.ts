@@ -19,10 +19,10 @@ export async function doSessionCreate(args: { nameA: string, nameB: string, desc
             message: "Name must be at least 3 characters long"
         }
     }
-    if (description.length < 100) {
+    if (description.length < 20) {
         return {
             ok: false,
-            message: "Description must be at least 100 characters long"
+            message: "Description must be at least 20 characters long"
         }
     }
 

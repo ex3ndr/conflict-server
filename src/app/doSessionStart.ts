@@ -10,7 +10,7 @@ export async function doSessionStart(session: Session) {
 
     // Persist session
     await inTx(async (tx) => {
-        tx.session.update(({
+        await tx.session.update(({
             where: {
                 uid: session.uid,
 

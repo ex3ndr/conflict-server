@@ -4,11 +4,15 @@ import * as z from 'zod';
 import { doSessionCreate } from './app/doSessionCreate';
 import { doSessionGet } from './app/doSessionGet';
 import { doSessionJoin } from './app/doSessionJoin';
+import { startStarterWorker } from './app/startStarterWorker';
 
 (async () => {
 
     // Load database
     await startDB();
+
+    // Start workers
+    await startStarterWorker();
 
     // Create a new express application instance
     const app = express()

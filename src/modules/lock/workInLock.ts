@@ -1,6 +1,6 @@
 import { tryLock } from "./tryLock";
 import { backoff, delay } from "../../utils/time";
-import { randomKey } from "@/utils/randomKey";
+import { randomKey } from "../../utils/randomKey";
 
 export function workInLock(lockKey: string, worker: () => Promise<void>, options?: { lockDelay?: number }) {
     const key = randomKey();

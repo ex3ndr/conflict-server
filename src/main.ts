@@ -1,5 +1,5 @@
 import express from 'express';
-import { startDB } from '@/app/db';
+import { startDB } from './app/db';
 import * as z from 'zod';
 import { doSessionCreate } from './app/doSessionCreate';
 

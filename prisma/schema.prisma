@@ -43,6 +43,7 @@ model Session {
 
   // Started
   state SessionState @default(CREATED)
+  mid Int @default(0)
 
   // If AI response is needed
   needAI Boolean @default(false)

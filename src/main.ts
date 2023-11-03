@@ -1,5 +1,7 @@
 import express from 'express';
 import { startDB } from '@/app/db';
+import * as z from 'zod';
+import { doSessionCreate } from './app/doSessionCreate';
 
 (async () => {
 
@@ -16,8 +18,24 @@ import { startDB } from '@/app/db';
     app.get('/', (req, res) => {
         res.send('Welcome to Conflict AI server!');
     });
-    app.post('/session/create', (req, res) => {
-        res.send('Session created!');
+    app.post('/session/create', async (req, res) => {
+        let body = schemaCreate.safeParse(req.body);
+        if (!body.success) {
+            res.status(400).send({ ok: false, message: 'Invalid request' });
+            return;
+        }
+        (async () => {
+            try {
+                let res = await doSessionCreate({ nameA: body.data.nameA, nameB: body.data.nameB, description: body.data.description, repeatKey: body.data.repeatKey });
+                if (!res.ok) {
+                    res.status(422).send(res);
+                } else {
+                    res.send(res);
+                }
+            } catch (e) {
+                res.status(500).send('Internal error');
+            }
+        })();
     });
     app.post('/session/join', (req, res) => {
         res.send('Session created!');
@@ -31,3 +49,10 @@ import { startDB } from '@/app/db';
 
     console.log('Server started at http://localhost:' + port);
 })();
+
+const schemaCreate = z.object({
+    repeatKey: z.string(),
+    nameA: z.string(),
+    nameB: z.string(),
+    description: z.string(),
+});

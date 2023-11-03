@@ -1,6 +1,10 @@
 import express from 'express';
+import { startDB } from './app/db';
 
 (async () => {
+
+    // Load database
+    await startDB();
 
     // Create a new express application instance
     const app = express()

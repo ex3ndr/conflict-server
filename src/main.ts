@@ -3,6 +3,7 @@ import { startDB } from './app/db';
 import * as z from 'zod';
 import { doSessionCreate } from './app/doSessionCreate';
 import { doSessionGet } from './app/doSessionGet';
+import { doSessionJoin } from './app/doSessionJoin';
 
 (async () => {
 
@@ -56,7 +57,24 @@ import { doSessionGet } from './app/doSessionGet';
         })();
     });
     app.post('/session/join', (req, res) => {
-        res.send('Session created!');
+        let body = schemaJoin.safeParse(req.body);
+        if (!body.success) {
+            res.status(400).send({ ok: false, message: 'Invalid request' });
+            return;
+        }
+        (async () => {
+            try {
+                let result = await doSessionJoin(body.data.id, body.data.token, body.data.side);
+                if (!result.ok) {
+                    res.status(422).send(result);
+                } else {
+                    res.send(result);
+                }
+            } catch (e) {
+                console.warn(e);
+                res.status(500).send('Internal error');
+            }
+        })();
     });
 
     // Start the server
@@ -74,4 +92,9 @@ const schemaCreate = z.object({
 
 const schemaGet = z.object({
     id: z.string()
+});
+const schemaJoin = z.object({
+    id: z.string(),
+    token: z.string(),
+    side: z.union([z.literal('a'), z.literal('b')])
 });

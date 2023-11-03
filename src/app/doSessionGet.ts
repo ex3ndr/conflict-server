@@ -14,9 +14,9 @@ export async function doSessionGet(id: string) {
             state: 'awaiting',
             createdAt: Math.floor(res.createdAt.getTime() / 1000),
             nameA: res.nameA,
-            joinedA: res.joinedA,
+            joinedA: res.joinTokenA !== null,
             nameB: res.nameB,
-            joinedB: res.joinedB,
+            joinedB: res.joinTokenB !== null,
             description: res.description
         };
     }

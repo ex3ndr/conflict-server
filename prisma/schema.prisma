@@ -32,11 +32,11 @@ model Session {
 
   // Side A
   nameA String
-  joinedA Boolean @default(false)
+  joinTokenA String?
 
   // Side B
   nameB String
-  joinedB Boolean @default(false)
+  joinTokenB String?
 
   // Description
   description String

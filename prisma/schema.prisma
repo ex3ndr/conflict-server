@@ -25,28 +25,59 @@ enum SessionState {
 }
 
 model Session {
-  id Int @id @default(autoincrement())
-  uid String @unique
-  repeatKey String @unique
+  id        Int      @id @default(autoincrement())
+  uid       String   @unique
+  repeatKey String   @unique
   createdAt DateTime @default(now())
 
   // Side A
-  nameA String
+  nameA      String
   joinTokenA String?
+  inboxA     Int?
 
   // Side B
-  nameB String
+  nameB      String
   joinTokenB String?
+  inboxB     Int?
 
   // Description
   description String
 
   // Started
   state SessionState @default(CREATED)
-  mid Int @default(0)
 
   // If AI response is needed
   needAI Boolean @default(false)
 
   @@map("session")
+}
+
+model Inbox {
+  id  Int @id @default(autoincrement())
+  mid Int @default(0)
+  uid Int @default(0)
+
+  @@map("inbox")
+}
+
+model Message {
+  mid       Int
+  inbox     Int
+  version   Int      @default(0)
+  createdAt DateTime @default(now())
+  body      Json
+
+  @@id([inbox, mid])
+  @@map("message")
+}
+
+model Updates {
+  inbox     Int
+  uid       Int
+  body      Json
+  repeatKey String
+
+  @@id([inbox, uid])
+  @@unique([inbox, repeatKey])
+  @@map("updates")
 }

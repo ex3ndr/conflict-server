@@ -7,6 +7,13 @@ export function sessionConvert(session: Session | null, token: string) {
         };
     }
 
+    // If already expired
+    if (session.state === 'FINISHED') {
+        return {
+            state: 'expired'
+        };
+    }
+
     // Resolve joined state
     let joined: 'none' | 'a' | 'b' = 'none';
     if (session.joinTokenA === token) {
@@ -34,8 +41,6 @@ export function sessionConvert(session: Session | null, token: string) {
         return {
             state: 'starting',
             createdAt: Math.floor(session.createdAt.getTime() / 1000),
-            nameA: session.nameA,
-            nameB: session.nameB,
             description: session.description,
             joined
         };
@@ -49,13 +54,9 @@ export function sessionConvert(session: Session | null, token: string) {
             nameA: session.nameA,
             nameB: session.nameB,
             description: session.description,
-            mid: session.mid,
             joined
         };
     }
 
-    // Fallback
-    return {
-        state: 'expired'
-    };
-}
+    throw Error('Invalid session state');
+};

@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "inbox" ADD COLUMN     "uid" INTEGER NOT NULL DEFAULT 0;

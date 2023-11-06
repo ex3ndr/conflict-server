@@ -60,6 +60,12 @@ export async function doSessionSend(id: string, token: string, text: string, rep
             }
         });
 
+        // Mark as AI needed
+        await tx.session.update({
+            where: { uid: id },
+            data: { needAI: true }
+        });
+
         return {
             ok: true
         };

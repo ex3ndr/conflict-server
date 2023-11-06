@@ -3,6 +3,8 @@ import { inTx } from "./inTx";
 import { doInboxCreate } from "./doInboxCreate";
 import { doInboxWrite } from "./doInboxWrite";
 import { Message } from "./types";
+import { createInitialMessage } from "../ai/createInitialMessage";
+import { executeInitialMessage } from "../ai/executeInitialMessage";
 
 export async function doSessionStart(session: Session) {
 
@@ -10,12 +12,19 @@ export async function doSessionStart(session: Session) {
     // TODO: Execute AI
     //
 
+    let msg = createInitialMessage({
+        nameA: session.nameA,
+        nameB: session.nameB,
+        description: session.description
+    });
+    let text = await executeInitialMessage(msg);
+
     let message: Message = {
         sender: 'system',
         date: Date.now(),
         body: {
             kind: 'text',
-            value: 'Hello world'
+            value: text
         }
     };
 

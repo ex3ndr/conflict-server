@@ -29,6 +29,6 @@ export async function doInboxGet(tx: Tx, id: number, after: string | null) {
     return {
         next,
         hasMore,
-        messages: messages.map((v) => ({ version: v.version, mid: v.mid, body: v.body }))
+        messages: messages.map((v) => ({ version: v.version, mid: v.mid, content: v.body }))
     };
 }

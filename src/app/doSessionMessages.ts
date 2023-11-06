@@ -23,7 +23,7 @@ export async function doSessionMessages(id: string, token: string, after: string
 
         return {
             ok: true,
-            messages: doInboxGet(tx, inboxId, after)
+            messages: await doInboxGet(tx, inboxId, after)
         }
     });
 }

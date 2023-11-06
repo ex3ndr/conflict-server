@@ -23,7 +23,7 @@ export async function doInboxGet(tx: Tx, id: number, after: string | null) {
 
     // Prepare data
     let hasMore = messages.length === PAGE_SIZE + 1 ? messages[PAGE_SIZE - 1].mid.toString() : null;
-    let next = messages[PAGE_SIZE - 1].mid.toString();
+    let next = messages[messages.length - 1].mid.toString();
     messages = messages.slice(0, PAGE_SIZE);
 
     return {

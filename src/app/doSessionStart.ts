@@ -49,7 +49,7 @@ export async function doSessionStart(session: Session) {
         // Update session
         await tx.session.update(({
             where: { uid: session.uid },
-            data: { state: 'STARTED', needAI: false, inboxA: inboxA.id, inboxB: inboxB.id, system: ai.system }
+            data: { state: 'STARTED', needAI: false, inboxA: inboxA.id, inboxB: inboxB.id, system: ai.system, systemInbox: inboxSystem.id }
         }));
     });
 }

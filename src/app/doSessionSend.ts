@@ -1,7 +1,7 @@
 import { doInboxWrite } from "./doInboxWrite";
 import { inTx } from "./inTx";
 
-export async function doSessionSend(id: string, token: string, text: string) {
+export async function doSessionSend(id: string, token: string, text: string, repeatKey: string) {
     return await inTx(async (tx) => {
 
         // Load session
@@ -30,6 +30,14 @@ export async function doSessionSend(id: string, token: string, text: string) {
             return {
                 ok: false,
                 message: 'Access Denied'
+            };
+        }
+
+        // Check for repeat
+        let fullRepeatKey = 'message_send_' + id + '_' + side + '_' + repeatKey;
+        if (await tx.repeatKeys.findFirst({ where: { key: fullRepeatKey } }) !== null) {
+            return {
+                ok: true
             };
         }
 

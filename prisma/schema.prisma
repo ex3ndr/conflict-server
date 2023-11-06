@@ -81,3 +81,10 @@ model Updates {
   @@unique([inbox, repeatKey])
   @@map("updates")
 }
+
+model RepeatKeys {
+  key   String @id
+  value String
+
+  @@map("repeat_keys")
+}

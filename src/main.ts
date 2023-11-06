@@ -110,7 +110,7 @@ import { doSessionSend } from './app/doSessionSend';
         }
         (async () => {
             try {
-                let result = await doSessionSend(body.data.id, body.data.token, body.data.text);
+                let result = await doSessionSend(body.data.id, body.data.token, body.data.text, body.data.repeatKey);
                 if (!result.ok) {
                     res.status(422).send(result);
                 } else {
@@ -153,5 +153,6 @@ const schemaMessages = z.object({
 const schemaSend = z.object({
     id: z.string(),
     token: z.string(),
-    text: z.string()
+    text: z.string(),
+    repeatKey: z.string()
 });

@@ -12,7 +12,7 @@ export async function doInboxGet(tx: Tx, id: number, after: string | null) {
         },
         take: PAGE_SIZE + 1,
         orderBy: {
-            mid: 'asc'
+            mid: 'desc'
         }
     });
 
@@ -22,13 +22,15 @@ export async function doInboxGet(tx: Tx, id: number, after: string | null) {
     }
 
     // Prepare data
-    let hasMore = messages.length === PAGE_SIZE + 1 ? messages[PAGE_SIZE - 1].mid.toString() : null;
-    let next = messages[messages.length - 1].mid.toString();
-    messages = messages.slice(0, PAGE_SIZE);
+    let hasMore = messages.length === PAGE_SIZE + 1;
+    let next = messages[0].mid.toString();
+    if (messages.length > PAGE_SIZE) {
+        messages = messages.slice(1);
+    }
 
     return {
         next,
         hasMore,
-        messages: messages.map((v) => ({ version: v.version, mid: v.mid, content: v.body }))
+        messages: messages.map((v) => ({ version: v.version, mid: v.mid, content: v.body })).reverse()
     };
 }

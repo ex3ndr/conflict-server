@@ -7,6 +7,7 @@ import { doSessionJoin } from './app/doSessionJoin';
 import { workerSessionStarter } from './app/workerSessionStarter';
 import { doSessionMessages } from './app/doSessionMessages';
 import { doSessionSend } from './app/doSessionSend';
+import { workerSessionUpdater } from './app/workserSessionUpdate';
 
 (async () => {
 
@@ -15,6 +16,7 @@ import { doSessionSend } from './app/doSessionSend';
 
     // Start workers
     workerSessionStarter();
+    workerSessionUpdater();
 
     // Create a new express application instance
     const app = express()

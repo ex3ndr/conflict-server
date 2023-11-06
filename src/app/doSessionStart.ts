@@ -12,12 +12,12 @@ export async function doSessionStart(session: Session) {
     // TODO: Execute AI
     //
 
-    let msg = createInitialMessage({
+    let system = createInitialMessage({
         nameA: session.nameA,
         nameB: session.nameB,
         description: session.description
     });
-    let text = await executeInitialMessage(msg);
+    let text = await executeInitialMessage(system);
 
     let message: Message = {
         sender: 'system',
@@ -47,7 +47,7 @@ export async function doSessionStart(session: Session) {
         // Update session
         await tx.session.update(({
             where: { uid: session.uid },
-            data: { state: 'STARTED', needAI: false, inboxA: inboxA.id, inboxB: inboxB.id }
+            data: { state: 'STARTED', needAI: false, inboxA: inboxA.id, inboxB: inboxB.id, system }
         }));
     });
 }

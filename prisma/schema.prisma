@@ -43,6 +43,9 @@ model Session {
   // Description
   description String
 
+  // AI system data
+  system String?
+
   // Started
   state SessionState @default(CREATED)
 

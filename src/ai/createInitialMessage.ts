@@ -20,8 +20,6 @@ All messages you are receiving are prefixed by "A:" and "B:", which signifies th
 Depending on the message you are receiving, you should reply in one of the following formats:
 * SKIP to skip the message and continue the conversation without your intervention.
 * MESSAGE: <your message> to send a message to the other participant. This message must has a mention of participant A or B or both. You prefer to send messages to a single participant, but you can also send messages to both participants at the same time.
-
-You should try to SKIP as much as possible, try to not interrupt the participants while keeping conversation flowing.
 `);
 
 const message_first = trimIndent(`

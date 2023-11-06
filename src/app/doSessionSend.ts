@@ -40,6 +40,12 @@ export async function doSessionSend(id: string, token: string, text: string, rep
                 ok: true
             };
         }
+        await tx.repeatKeys.create({
+            data: {
+                key: fullRepeatKey,
+                value: ''
+            }
+        })
 
         // Write message
         let date = Date.now();

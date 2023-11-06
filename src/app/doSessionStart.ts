@@ -3,30 +3,19 @@ import { inTx } from "./inTx";
 import { doInboxCreate } from "./doInboxCreate";
 import { doInboxWrite } from "./doInboxWrite";
 import { Message } from "./types";
-import { createInitialMessage } from "../ai/createInitialMessage";
-import { executeInitialMessage } from "../ai/executeInitialMessage";
+import { doBrainStart } from "../ai/doBrainStart";
 
 export async function doSessionStart(session: Session) {
 
     //
-    // TODO: Execute AI
+    // Execute AI
     //
 
-    let system = createInitialMessage({
+    let ai = await doBrainStart({
         nameA: session.nameA,
         nameB: session.nameB,
         description: session.description
     });
-    let text = await executeInitialMessage(system);
-
-    let message: Message = {
-        sender: 'system',
-        date: Date.now(),
-        body: {
-            kind: 'text',
-            value: text
-        }
-    };
 
 
     // Persist session
@@ -41,13 +30,26 @@ export async function doSessionStart(session: Session) {
         // Create inboxes
         let inboxA = await doInboxCreate(tx);
         let inboxB = await doInboxCreate(tx);
+        let inboxSystem = await doInboxCreate(tx);
+
+
+        // Write message
+        let message: Message = {
+            sender: 'system',
+            date: Date.now(),
+            body: {
+                kind: 'text',
+                value: ai.text
+            }
+        };
         await doInboxWrite(tx, inboxA.id, message);
         await doInboxWrite(tx, inboxB.id, message);
+        await doInboxWrite(tx, inboxSystem.id, message);
 
         // Update session
         await tx.session.update(({
             where: { uid: session.uid },
-            data: { state: 'STARTED', needAI: false, inboxA: inboxA.id, inboxB: inboxB.id, system }
+            data: { state: 'STARTED', needAI: false, inboxA: inboxA.id, inboxB: inboxB.id, system: ai.system }
         }));
     });
 }

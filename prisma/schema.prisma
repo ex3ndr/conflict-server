@@ -44,7 +44,8 @@ model Session {
   description String
 
   // AI system data
-  system String?
+  system      String?
+  systemInbox Int?
 
   // Started
   state SessionState @default(CREATED)

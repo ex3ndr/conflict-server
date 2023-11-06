@@ -4,7 +4,8 @@ import * as z from 'zod';
 import { doSessionCreate } from './app/doSessionCreate';
 import { doSessionGet } from './app/doSessionGet';
 import { doSessionJoin } from './app/doSessionJoin';
-import { startStarterWorker } from './app/startStarterWorker';
+import { workerSessionStarter } from './app/workerSessionStarter';
+import { doSessionMessages } from './app/doSessionMessages';
 
 (async () => {
 
@@ -12,7 +13,7 @@ import { startStarterWorker } from './app/startStarterWorker';
     await startDB();
 
     // Start workers
-    await startStarterWorker();
+    workerSessionStarter();
 
     // Create a new express application instance
     const app = express()
@@ -80,6 +81,26 @@ import { startStarterWorker } from './app/startStarterWorker';
             }
         })();
     });
+    app.post('/session/messages', (req, res) => {
+        let body = schemaMessages.safeParse(req.body);
+        if (!body.success) {
+            res.status(400).send({ ok: false, message: 'Invalid request' });
+            return;
+        }
+        (async () => {
+            try {
+                let result = await doSessionMessages(body.data.id, body.data.token, body.data.after ? body.data.after : null);
+                if (!result.ok) {
+                    res.status(422).send(result);
+                } else {
+                    res.send(result);
+                }
+            } catch (e) {
+                console.warn(e);
+                res.status(500).send('Internal error');
+            }
+        })();
+    });
 
     // Start the server
     await new Promise((resolve) => app.listen(port, () => resolve(undefined)));
@@ -102,4 +123,9 @@ const schemaJoin = z.object({
     id: z.string(),
     token: z.string(),
     side: z.union([z.literal('a'), z.literal('b')])
+});
+const schemaMessages = z.object({
+    id: z.string(),
+    token: z.string(),
+    after: z.union([z.null(), z.string()]).optional(),
 });

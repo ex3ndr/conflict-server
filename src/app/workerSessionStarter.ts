@@ -3,7 +3,7 @@ import { delay } from "../utils/time";
 import { doSessionStart } from "./doSessionStart";
 import { inTx } from "./inTx";
 
-export async function startStarterWorker() {
+export function workerSessionStarter() {
     workInLock('session_starter', async () => {
 
         // Check if there is a session that needs to be started

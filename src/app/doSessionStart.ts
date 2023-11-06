@@ -1,12 +1,23 @@
 import { Session } from "@prisma/client";
 import { inTx } from "./inTx";
 import { doInboxCreate } from "./doInboxCreate";
+import { doInboxWrite } from "./doInboxWrite";
+import { Message } from "./types";
 
 export async function doSessionStart(session: Session) {
 
     //
     // TODO: Execute AI
     //
+
+    let message: Message = {
+        sender: 'system',
+        date: Date.now(),
+        body: {
+            kind: 'text',
+            value: 'Hello world'
+        }
+    };
 
 
     // Persist session
@@ -21,6 +32,8 @@ export async function doSessionStart(session: Session) {
         // Create inboxes
         let inboxA = await doInboxCreate(tx);
         let inboxB = await doInboxCreate(tx);
+        await doInboxWrite(tx, inboxA.id, message);
+        await doInboxWrite(tx, inboxB.id, message);
 
         // Update session
         await tx.session.update(({

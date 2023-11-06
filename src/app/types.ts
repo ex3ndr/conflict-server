@@ -1,7 +1,7 @@
 export type Message = {
     sender: 'incoming' | 'outgoing' | 'system',
     date: number,
-    message: {
+    body: {
         kind: 'text',
         value: string
     }

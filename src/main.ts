@@ -6,6 +6,7 @@ import { doSessionGet } from './app/doSessionGet';
 import { doSessionJoin } from './app/doSessionJoin';
 import { workerSessionStarter } from './app/workerSessionStarter';
 import { doSessionMessages } from './app/doSessionMessages';
+import { doSessionSend } from './app/doSessionSend';
 
 (async () => {
 
@@ -101,6 +102,26 @@ import { doSessionMessages } from './app/doSessionMessages';
             }
         })();
     });
+    app.post('/session/send', (req, res) => {
+        let body = schemaSend.safeParse(req.body);
+        if (!body.success) {
+            res.status(400).send({ ok: false, message: 'Invalid request' });
+            return;
+        }
+        (async () => {
+            try {
+                let result = await doSessionSend(body.data.id, body.data.token, body.data.text);
+                if (!result.ok) {
+                    res.status(422).send(result);
+                } else {
+                    res.send(result);
+                }
+            } catch (e) {
+                console.warn(e);
+                res.status(500).send('Internal error');
+            }
+        })();
+    });
 
     // Start the server
     await new Promise((resolve) => app.listen(port, () => resolve(undefined)));
@@ -128,4 +149,9 @@ const schemaMessages = z.object({
     id: z.string(),
     token: z.string(),
     after: z.union([z.null(), z.string()]).optional(),
+});
+const schemaSend = z.object({
+    id: z.string(),
+    token: z.string(),
+    text: z.string()
 });

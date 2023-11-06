@@ -68,6 +68,12 @@ export function workerSessionUpdater() {
             if (inbox.mid > session!.inbox!.mid || inbox.uid > session!.inbox!.uid) {
                 needAI = s.needAI; // Only clear if inbox has NOT been updated
             }
+            await tx.session.update({
+                where: { id: session!.session.id },
+                data: {
+                    needAI
+                }
+            });
 
             // Write message
             if (text !== null && text !== 'SKIP') {

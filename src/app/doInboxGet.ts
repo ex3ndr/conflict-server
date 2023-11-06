@@ -25,7 +25,7 @@ export async function doInboxGet(tx: Tx, id: number, after: string | null) {
     let hasMore = messages.length === PAGE_SIZE + 1;
     let next = messages[0].mid.toString();
     if (messages.length > PAGE_SIZE) {
-        messages = messages.slice(1);
+        messages = messages.slice(0, PAGE_SIZE);
     }
 
     return {

@@ -76,10 +76,15 @@ export function workerSessionUpdater() {
             });
 
             // Write message
+            let date = Date.now();
             if (text !== null && text !== 'SKIP') {
+                let msg = text;
+                if (msg.startsWith('MESSAGE:')) {
+                    msg = msg.substring(8).trim();
+                }
                 let message: Message = {
                     sender: 'system',
-                    date: Date.now(),
+                    date,
                     body: {
                         kind: 'text',
                         value: text
@@ -87,7 +92,18 @@ export function workerSessionUpdater() {
                 }
                 await doInboxWrite(tx, s.inboxA!, message);
                 await doInboxWrite(tx, s.inboxB!, message);
-                await doInboxWrite(tx, s.systemInbox!, message);
+            }
+
+            // Write system message
+            if (text !== null) {
+                await doInboxWrite(tx, s.systemInbox!, {
+                    sender: 'system',
+                    date,
+                    body: {
+                        kind: 'text',
+                        value: text
+                    }
+                });
             }
         });
 

@@ -87,7 +87,7 @@ export function workerSessionUpdater() {
                     date,
                     body: {
                         kind: 'text',
-                        value: text
+                        value: msg
                     }
                 }
                 await doInboxWrite(tx, s.inboxA!, message);

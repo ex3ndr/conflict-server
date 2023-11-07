@@ -11,6 +11,6 @@ export async function doBrainStart(args: { nameA: string, nameB: string, descrip
     let text = await executeOllama([{ role: 'system', content: system }]);
     return {
         system,
-        text
+        text: text.response
     };
 }

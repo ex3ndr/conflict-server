@@ -50,7 +50,7 @@ export function workerSessionUpdater() {
         }
 
         // Execute AI
-        let text = await doBrainUpdate({ messages, system: session.session.system! });
+        let update = await doBrainUpdate({ messages, system: session.session.system! });
 
         // Persist session
         await inTx(async (tx) => {
@@ -77,34 +77,33 @@ export function workerSessionUpdater() {
 
             // Write message
             let date = Date.now();
-            if (text !== null && text !== 'SKIP') {
-                let msg = text;
-                if (msg.startsWith('MESSAGE:')) {
-                    msg = msg.substring(8).trim();
-                }
+            if (update.sendTo !== 'none' && update.message !== null) {
                 let message: Message = {
                     sender: 'system',
                     date,
+                    private: update.sendTo !== 'both',
                     body: {
                         kind: 'text',
-                        value: msg
+                        value: update.message
                     }
+                };
+                if (update.sendTo === 'a' || update.sendTo === 'both') {
+                    await doInboxWrite(tx, s.inboxA!, message);
                 }
-                await doInboxWrite(tx, s.inboxA!, message);
-                await doInboxWrite(tx, s.inboxB!, message);
+                if (update.sendTo === 'b' || update.sendTo === 'both') {
+                    await doInboxWrite(tx, s.inboxB!, message);
+                }
             }
 
             // Write system message
-            if (text !== null) {
-                await doInboxWrite(tx, s.systemInbox!, {
-                    sender: 'system',
-                    date,
-                    body: {
-                        kind: 'text',
-                        value: text
-                    }
-                });
-            }
+            await doInboxWrite(tx, s.systemInbox!, {
+                sender: 'system',
+                date,
+                body: {
+                    kind: 'text',
+                    value: update.aiMessage
+                }
+            });
         });
 
         await delay(1000);

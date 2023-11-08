@@ -11,6 +11,7 @@
     "migrate": "prisma migrate dev",
     "generate": "prisma generate",
     "postinstall": "prisma generate",
+    "prompts": "ts-node ./src/ai/prompts/_gen.ts",
     "db": "docker run -e POSTGRES_PASSWORD=postgres -v $(pwd)/.pgdata:/var/lib/postgresql/data -p 5432:5432 postgres:15"
   },
   "dependencies": {

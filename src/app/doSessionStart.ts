@@ -34,7 +34,23 @@ export async function doSessionStart(session: Session) {
 
 
         // Write message
+        let text = ai.text;
+        if (text.startsWith('MESSAGE:')) {
+            text = text.substring(8).trim();
+        }
         let message: Message = {
+            sender: 'system',
+            date: Date.now(),
+            body: {
+                kind: 'text',
+                value: text
+            }
+        };
+        await doInboxWrite(tx, inboxA.id, message);
+        await doInboxWrite(tx, inboxB.id, message);
+
+        // Write system message
+        message = {
             sender: 'system',
             date: Date.now(),
             body: {
@@ -42,8 +58,6 @@ export async function doSessionStart(session: Session) {
                 value: ai.text
             }
         };
-        await doInboxWrite(tx, inboxA.id, message);
-        await doInboxWrite(tx, inboxB.id, message);
         await doInboxWrite(tx, inboxSystem.id, message);
 
         // Update session

@@ -59,7 +59,7 @@ export async function doSessionSend(id: string, token: string, text: string, isP
             }
         });
         await doInboxWrite(tx, session.systemInbox!, { // We use sender flags similar to Side A
-            sender: 'outgoing',
+            sender: side === 'a' ? 'outgoing' : 'incoming',
             date,
             private: isPrivate,
             body: {

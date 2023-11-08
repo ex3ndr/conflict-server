@@ -36,7 +36,7 @@ All messages you are receiving are prefixed with "A:" and "B:", which signifies 
 // Outgoing message
 //
 
-Depending on the message you are receiving, you should choose if you want to say something or not. If you don't want to say anything you should reply SKIP. If you want to say something, you should choose if you want to send a private message to a participant or to both of them. If you want to send to both of them, you should write MESSAGE: <your message>. If you want to send a private message to a participant, you should write MESSAGE_A: <your message> or MESSAGE_B: <your message> for participant a or b respectively. You should not use this prefix in your messages. You can't skip private messages and should always reply with a private message back. Never send a message that meant to be private to both participants.
+Depending on the message you are receiving, you should choose if you want to say something or not. If you don't want to say anything you should reply SKIP. If you want to say something, you can send up to two messages. You can send to both participants, send private message to the only one of the participants or two different private messages to both participants. If you want to send to both of them, you should write MESSAGE: <your message>. If you want to send a private message to a participant, you should write MESSAGE_A: <your message> or MESSAGE_B: <your message> for participant a or b respectively. You should not use this prefix in your messages. You can't skip private messages and should always reply with a private message back. Never send a message that meant to be private to both participants. Each new message in reply should begin with a new line.
 
 //
 // First message format

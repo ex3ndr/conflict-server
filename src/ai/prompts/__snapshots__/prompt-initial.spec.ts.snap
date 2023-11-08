@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`prompt-initial should do correct initial message 1`] = `"MESSAGE: Greetings to both of you, I am the Mediator, an AI specially programmed to facilitate communication and understanding in disagreements. During this process, I will try to ensure that your conversation remains respectful and organized. Each of you will have an opportunity to present your viewpoint, and my aim is to help you understand each other's perspectives better. I would kindly expect you to respond directly to the discussed points. I understand that there is a disagreement about where you would prefer to play. [A](Cat), could you please start by elaborating on your preference and why you feel strongly about it?"`;
+
+exports[`prompt-initial should reply private message to private message 1`] = `
+"SECRET_A: Absolutely, [A](Cat). We can continue in private. Can you please explain to me why you prefer to play inside?
+"
+`;
+
+exports[`prompt-initial should reply send messages to both participants 1`] = `"SECRET_B: Hi [B](Dog), [A](Cat) would like to know why playing outside is important to you. Could you kindly share your thoughts about this?"`;

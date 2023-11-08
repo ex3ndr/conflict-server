@@ -1,14 +1,32 @@
 import { executeOpenAI } from "../modules/openai/openai";
 
-export async function doBrainUpdate(args: { messages: { side: 'a' | 'b' | 'assistant', content: string }[], system: string }) {
-    let executed = await executeOpenAI([
-        { role: 'system', content: args.system },
-        ...args.messages.map(m => ({
-            role: (m.side === 'assistant' ? 'assistant' as const : 'user' as const),
-            content: m.side === 'a' ? 'A: ' + m.content : (m.side === 'b' ? 'B: ' + m.content : m.content)
-        }))
-    ]);
+export async function doBrainUpdate(args: { messages: { side: 'a' | 'b' | 'assistant', private: boolean, content: string }[], system: string }) {
 
+    // Convert messages
+    let converted: { role: 'system' | 'assistant' | 'user', content: string }[] = [];
+    converted.push({ role: 'system', content: args.system });
+    for (let m of args.messages) {
+        if (m.side === 'a') {
+            if (m.private) {
+                converted.push({ role: 'user', content: 'PRIVATE_A: ' + m.content });
+            } else {
+                converted.push({ role: 'user', content: 'A: ' + m.content });
+            }
+        } else if (m.side === 'b') {
+            if (m.private) {
+                converted.push({ role: 'user', content: 'PRIVATE_B: ' + m.content });
+            } else {
+                converted.push({ role: 'user', content: 'B: ' + m.content });
+            }
+        } else {
+            converted.push({ role: 'assistant', content: m.content });
+        }
+    }
+
+    // Execute
+    let executed = await executeOpenAI(converted);
+
+    // Process results
     let aiMessage: string = executed;
     let message: string | null = executed;
     let sendTo: 'a' | 'b' | 'both' | 'none' = 'both';

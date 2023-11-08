@@ -112,7 +112,7 @@ import { workerSessionUpdater } from './app/workserSessionUpdate';
         }
         (async () => {
             try {
-                let result = await doSessionSend(body.data.id, body.data.token, body.data.text, body.data.repeatKey);
+                let result = await doSessionSend(body.data.id, body.data.token, body.data.text, body.data.private, body.data.repeatKey);
                 if (!result.ok) {
                     res.status(422).send(result);
                 } else {
@@ -156,5 +156,6 @@ const schemaSend = z.object({
     id: z.string(),
     token: z.string(),
     text: z.string(),
+    private: z.boolean(),
     repeatKey: z.string()
 });

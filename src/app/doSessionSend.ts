@@ -1,7 +1,7 @@
 import { doInboxWrite } from "./doInboxWrite";
 import { inTx } from "./inTx";
 
-export async function doSessionSend(id: string, token: string, text: string, repeatKey: string) {
+export async function doSessionSend(id: string, token: string, text: string, isPrivate: boolean, repeatKey: string) {
     return await inTx(async (tx) => {
 
         // Load session
@@ -52,6 +52,7 @@ export async function doSessionSend(id: string, token: string, text: string, rep
         await doInboxWrite(tx, senderInbox, {
             sender: 'outgoing',
             date,
+            private: isPrivate,
             body: {
                 kind: 'text',
                 value: text
@@ -60,19 +61,23 @@ export async function doSessionSend(id: string, token: string, text: string, rep
         await doInboxWrite(tx, session.systemInbox!, { // We use sender flags similar to Side A
             sender: 'outgoing',
             date,
+            private: isPrivate,
             body: {
                 kind: 'text',
                 value: text
             }
         });
-        await doInboxWrite(tx, receiverInbox, {
-            sender: 'incoming',
-            date,
-            body: {
-                kind: 'text',
-                value: text
-            }
-        });
+        if (!isPrivate) {
+            await doInboxWrite(tx, receiverInbox, {
+                sender: 'incoming',
+                date,
+                private: isPrivate,
+                body: {
+                    kind: 'text',
+                    value: text
+                }
+            });
+        }
 
         // Mark as AI needed
         await tx.session.update({

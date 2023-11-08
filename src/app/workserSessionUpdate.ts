@@ -28,7 +28,7 @@ export function workerSessionUpdater() {
         }
 
         // Convert messages
-        let messages: { side: 'a' | 'b' | 'assistant', content: string }[] = [];
+        let messages: { side: 'a' | 'b' | 'assistant', private: boolean, content: string }[] = [];
         for (let m of session.messages) {
 
             // Load message
@@ -45,7 +45,8 @@ export function workerSessionUpdater() {
             // Append message
             messages.push({
                 side,
-                content: msg.body.value
+                content: msg.body.value,
+                private: msg.private === true
             });
         }
 

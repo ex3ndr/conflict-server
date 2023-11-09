@@ -2,7 +2,7 @@
 
 exports[`prompt-initial should do correct initial message 1`] = `
 "#PUBLIC
-Hello [A](Cat) and [B](Dog). I am Mediator, and I am here to assist you both in reaching a fair and mutually beneficial solution. During this session, it's essential to be open, respectful, and direct. You both seem to have differing preferences on where to play. Let's begin by understanding your perspectives better. [A](Cat), could you please explain why you prefer to play inside? 
+Hello Participant A and Participant B, I'm your mediator. I'm here to facilitate your discussion and help you both understand each other's points of view better. Remember to listen to each other with empathy and openness. We're here to discuss our differences about indoor and outdoor play preferences. [A](Cat), could you start by explaining why you prefer playing inside? 
 #SECRET_A
 #SECRET_B
 #END"
@@ -11,7 +11,7 @@ Hello [A](Cat) and [B](Dog). I am Mediator, and I am here to assist you both in 
 exports[`prompt-initial should reply private message to private message 1`] = `
 "#PUBLIC
 #SECRET_A
-Sure, [A](Cat), we can continue in private. Your comfort is important in this mediation process.
+Of course, [A](Cat). We will continue this in private.
 #SECRET_B
 #END"
 `;
@@ -19,8 +19,8 @@ Sure, [A](Cat), we can continue in private. Your comfort is important in this me
 exports[`prompt-initial should reply send messages to both participants 1`] = `
 "#PUBLIC
 #SECRET_A
-Sure, [A](Cat). I will ask [B](Dog) his reasons in private.
+Absolutely, [A](Cat). I would ask [B](Dog) about his reasons privately as per your request.
 #SECRET_B
-[B](Dog), [A](Cat) wanted to know why playing outside is appealing to you. Could you please explain your reasons?
+[B](Dog), could you please explain your preference for playing outside?
 #END"
 `;

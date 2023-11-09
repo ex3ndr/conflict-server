@@ -126,8 +126,8 @@ import { doSessionSubscribe } from './app/doSessionSubscribe';
         })();
     });
     app.get('/session/events', (req, res) => {
-        let id = (req.params as any).id as string;
-        let token = (req.params as any).token as string;
+        let id = (req.query as any).id as string;
+        let token = (req.query as any).token as string;
         if (!id || !token) {
             res.status(400).send({ ok: false, message: 'Invalid request' });
             return;

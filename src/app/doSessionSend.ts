@@ -1,5 +1,6 @@
 import { resumeKey } from "../utils/time";
 import { doInboxWrite } from "./doInboxWrite";
+import { doSessionPost } from "./doSessionPost";
 import { inTx } from "./inTx";
 
 export async function doSessionSend(id: string, token: string, text: string, isPrivate: boolean, repeatKey: string) {
@@ -50,7 +51,7 @@ export async function doSessionSend(id: string, token: string, text: string, isP
 
         // Write message
         let date = Date.now();
-        await doInboxWrite(tx, senderInbox, {
+        let updateSender = await doInboxWrite(tx, senderInbox, {
             sender: 'outgoing',
             date,
             private: isPrivate,
@@ -59,6 +60,8 @@ export async function doSessionSend(id: string, token: string, text: string, isP
                 value: text
             }
         });
+        doSessionPost(session.uid, side, { type: 'update', update: updateSender });
+
         await doInboxWrite(tx, session.systemInbox!, { // We use sender flags similar to Side A
             sender: side === 'a' ? 'outgoing' : 'incoming',
             date,
@@ -78,6 +81,7 @@ export async function doSessionSend(id: string, token: string, text: string, isP
                     value: text
                 }
             });
+            doSessionPost(session.uid, side === 'a' ? 'b' : 'a', { type: 'update', update: updateSender });
         }
 
         // Mark as AI needed

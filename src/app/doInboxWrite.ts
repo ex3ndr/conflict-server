@@ -19,17 +19,21 @@ export async function doInboxWrite(tx: Tx, inbox: number, message: Message) {
     });
 
     // Write update
+    let update: Update = {
+        update: 'new',
+        mid,
+        message
+    };
     await tx.updates.deleteMany({ where: { repeatKey: 'create-' + mid } });
     await tx.updates.create({
         data: {
             inbox,
             uid,
-            body: {
-                update: 'new',
-                mid,
-                message
-            } satisfies Update,
+            body: update,
             repeatKey: 'create-' + mid
         }
     });
+
+    // Emit
+    return update;
 }

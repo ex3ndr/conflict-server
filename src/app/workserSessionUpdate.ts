@@ -97,8 +97,10 @@ export function workerSessionUpdater() {
                             value: update.parsed.publicMessage
                         }
                     };
-                    await doInboxWrite(tx, s.inboxA!, message);
-                    await doInboxWrite(tx, s.inboxB!, message);
+                    let updateA = await doInboxWrite(tx, s.inboxA!, message);
+                    let updateB = await doInboxWrite(tx, s.inboxB!, message);
+                    doSessionPost(session.session.uid, 'a', { type: 'update', update: updateA });
+                    doSessionPost(session.session.uid, 'b', { type: 'update', update: updateB });
                 }
                 if (update.parsed.secretA) {
                     let message: Message = {
@@ -110,7 +112,8 @@ export function workerSessionUpdater() {
                             value: update.parsed.secretA
                         }
                     };
-                    await doInboxWrite(tx, s.inboxA!, message);
+                    let updateA = await doInboxWrite(tx, s.inboxA!, message);
+                    doSessionPost(session.session.uid, 'a', { type: 'update', update: updateA });
                 }
                 if (update.parsed.secretB) {
                     let message: Message = {
@@ -122,7 +125,8 @@ export function workerSessionUpdater() {
                             value: update.parsed.secretB
                         }
                     };
-                    await doInboxWrite(tx, s.inboxB!, message);
+                    let updateB = await doInboxWrite(tx, s.inboxB!, message);
+                    doSessionPost(session.session.uid, 'b', { type: 'update', update: updateB });
                 }
 
                 // Write system message

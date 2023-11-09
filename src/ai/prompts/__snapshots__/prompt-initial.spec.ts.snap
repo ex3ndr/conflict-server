@@ -1,10 +1,28 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`prompt-initial should do correct initial message 1`] = `"MESSAGE: Greetings to both of you, I am the Mediator, an AI specially programmed to facilitate communication and understanding in disagreements. During this process, I will try to ensure that your conversation remains respectful and organized. Each of you will have an opportunity to present your viewpoint, and my aim is to help you understand each other's perspectives better. I would kindly expect you to respond directly to the discussed points. I understand that there is a disagreement about where you would prefer to play. [A](Cat), could you please start by elaborating on your preference and why you feel strongly about it?"`;
+exports[`prompt-initial should do correct initial message 1`] = `
+"#PUBLIC
+Hello [A](Cat) and [B](Dog). I'm Mediator, here to assist you both in finding a resolution to your dilemma. For a successful mediation, let's remember to be respectful and patient with each other's point of view, it's crucial to understanding the situation at hand. The dispute we are discussing seems to be about a difference in preferences - One of you wants to play inside while the other wants to play outside. 
 
-exports[`prompt-initial should reply private message to private message 1`] = `
-"SECRET_A: Absolutely, [A](Cat). We can continue in private. Can you please explain to me why you prefer to play inside?
-"
+To begin, I'll further ask [A](Cat), can you please describe more about why you prefer to play inside? 
+#SECRET_A
+#SECRET_B
+#END"
 `;
 
-exports[`prompt-initial should reply send messages to both participants 1`] = `"SECRET_B: Hi [B](Dog), [A](Cat) would like to know why playing outside is important to you. Could you kindly share your thoughts about this?"`;
+exports[`prompt-initial should reply private message to private message 1`] = `
+"#PUBLIC
+#SECRET_A
+Absolutely, [A](Cat), we can continue in private. I respect your privacy and wish to create a safe environment for the conversation. 
+#SECRET_B
+#END"
+`;
+
+exports[`prompt-initial should reply send messages to both participants 1`] = `
+"#PUBLIC
+#SECRET_A
+[A](Cat), I understand. I will speak with [B](Dog) privately.
+#SECRET_B
+[B](Dog), [A](Cat) has requested that I ask you privately about why you prefer to play outside. Can you please tell me your thoughts on this? 
+#END"
+`;

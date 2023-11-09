@@ -29,9 +29,13 @@ describe('prompt-initial', () => {
         }, {
             role: 'assistant',
             content: trimIndent(`
-                MESSAGE: Hello [A](Cat) and [B](Dog), my name is Mediator. I am here to help you both find a solution to the problem you're facing. It seems that [A](Cat) wants to play inside, while [B](Dog) wants to play outside. Is that correct?
+                #PUBLIC
+                Hello [A](Cat) and [B](Dog), my name is Mediator. I am here to help you both find a solution to the problem you're facing. It seems that [A](Cat) wants to play inside, while [B](Dog) wants to play outside. Is that correct?
                 
                 [A](Cat), could you please tell me why playing inside is important to you?
+                #SECRET_A
+                #SECRET_B
+                #END
             `)
         }, {
             role: 'user',
@@ -51,16 +55,26 @@ describe('prompt-initial', () => {
         }, {
             role: 'assistant',
             content: trimIndent(`
-                MESSAGE: Hello [A](Cat) and [B](Dog), my name is Mediator. I am here to help you both find a solution to the problem you're facing. It seems that [A](Cat) wants to play inside, while [B](Dog) wants to play outside. Is that correct?
+                #PUBLIC
+                Hello [A](Cat) and [B](Dog), my name is Mediator. I am here to help you both find a solution to the problem you're facing. It seems that [A](Cat) wants to play inside, while [B](Dog) wants to play outside. Is that correct?
                 
                 [A](Cat), could you please tell me why playing inside is important to you?
+                #SECRET_A
+                #SECRET_B
+                #END
             `)
         }, {
             role: 'user',
             content: 'SECRET_A: Can we continue in private?'
         }, {
             role: 'assistant',
-            content: 'SECRET_A: Of course, [A](Cat). Let\'s continue in private.'
+            content: trimIndent(`
+                #PUBLIC
+                #SECRET_A
+                Of course, [A](Cat). Let\'s continue in private.
+                #SECRET_B
+                #END
+            `)
         }, {
             role: 'user',
             content: 'SECRET_A: Can you ask Dog about his reasons in private?'

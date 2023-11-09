@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`parseOutput should parse output 1`] = `
+{
+  "publicMessage": "pppp",
+  "secretA": null,
+  "secretB": null,
+}
+`;
+
+exports[`parseOutput should parse output 2`] = `
+{
+  "publicMessage": null,
+  "secretA": "A",
+  "secretB": null,
+}
+`;
+
+exports[`parseOutput should parse output 3`] = `
+{
+  "publicMessage": null,
+  "secretA": "A",
+  "secretB": "B",
+}
+`;
+
+exports[`parseOutput should parse output 4`] = `
+{
+  "publicMessage": null,
+  "secretA": null,
+  "secretB": "B",
+}
+`;

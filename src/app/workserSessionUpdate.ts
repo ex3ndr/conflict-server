@@ -78,22 +78,42 @@ export function workerSessionUpdater() {
 
             // Write message
             let date = Date.now();
-            if (update.sendTo !== 'none' && update.message !== null) {
+            if (update.parsed.publicMessage) {
                 let message: Message = {
                     sender: 'system',
                     date,
-                    private: update.sendTo !== 'both',
+                    private: false,
                     body: {
                         kind: 'text',
-                        value: update.message
+                        value: update.parsed.publicMessage
                     }
                 };
-                if (update.sendTo === 'a' || update.sendTo === 'both') {
-                    await doInboxWrite(tx, s.inboxA!, message);
-                }
-                if (update.sendTo === 'b' || update.sendTo === 'both') {
-                    await doInboxWrite(tx, s.inboxB!, message);
-                }
+                await doInboxWrite(tx, s.inboxA!, message);
+                await doInboxWrite(tx, s.inboxB!, message);
+            }
+            if (update.parsed.secretA) {
+                let message: Message = {
+                    sender: 'system',
+                    date,
+                    private: true,
+                    body: {
+                        kind: 'text',
+                        value: update.parsed.secretA
+                    }
+                };
+                await doInboxWrite(tx, s.inboxA!, message);
+            }
+            if (update.parsed.secretB) {
+                let message: Message = {
+                    sender: 'system',
+                    date,
+                    private: true,
+                    body: {
+                        kind: 'text',
+                        value: update.parsed.secretB
+                    }
+                };
+                await doInboxWrite(tx, s.inboxB!, message);
             }
 
             // Write system message
@@ -102,7 +122,7 @@ export function workerSessionUpdater() {
                 date,
                 body: {
                     kind: 'text',
-                    value: update.aiMessage
+                    value: update.raw
                 }
             });
         });

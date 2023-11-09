@@ -1,5 +1,6 @@
 import { executeOpenAI } from "../modules/openai/openai";
 import { createInitialMessage } from "./createInitialMessage";
+import { parseOutput } from "./parseOutput";
 
 export async function doBrainStart(args: { nameA: string, nameB: string, description: string }) {
     let system = createInitialMessage({
@@ -8,8 +9,10 @@ export async function doBrainStart(args: { nameA: string, nameB: string, descrip
         description: args.description
     });
     let text = await executeOpenAI([{ role: 'system', content: system }]);
+    let parsed = parseOutput(text);
     return {
         system,
-        text: text
+        raw: text,
+        parsed
     };
 }

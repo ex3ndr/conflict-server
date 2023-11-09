@@ -32,33 +32,45 @@ export async function doSessionStart(session: Session) {
         let inboxB = await doInboxCreate(tx);
         let inboxSystem = await doInboxCreate(tx);
 
-
         // Write message
-        let text = ai.text;
-        if (text.startsWith('MESSAGE:')) {
-            text = text.substring(8).trim();
+        let date = Date.now();
+        if (ai.parsed.publicMessage) {
+            let message: Message = {
+                sender: 'system',
+                date,
+                private: false,
+                body: {
+                    kind: 'text',
+                    value: ai.parsed.publicMessage
+                }
+            };
+            await doInboxWrite(tx, inboxA.id, message);
+            await doInboxWrite(tx, inboxB.id, message);
         }
-        let message: Message = {
-            sender: 'system',
-            date: Date.now(),
-            body: {
-                kind: 'text',
-                value: text
-            }
-        };
-        await doInboxWrite(tx, inboxA.id, message);
-        await doInboxWrite(tx, inboxB.id, message);
-
-        // Write system message
-        message = {
-            sender: 'system',
-            date: Date.now(),
-            body: {
-                kind: 'text',
-                value: ai.text
-            }
-        };
-        await doInboxWrite(tx, inboxSystem.id, message);
+        if (ai.parsed.secretA) {
+            let message: Message = {
+                sender: 'system',
+                date,
+                private: true,
+                body: {
+                    kind: 'text',
+                    value: ai.parsed.secretA
+                }
+            };
+            await doInboxWrite(tx, inboxA.id, message);
+        }
+        if (ai.parsed.secretB) {
+            let message: Message = {
+                sender: 'system',
+                date,
+                private: true,
+                body: {
+                    kind: 'text',
+                    value: ai.parsed.secretB
+                }
+            };
+            await doInboxWrite(tx, inboxB.id, message);
+        }
 
         // Update session
         await tx.session.update(({

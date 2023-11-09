@@ -1,3 +1,5 @@
+import { events } from "../app/events";
+
 export async function delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -39,3 +41,32 @@ export function createBackoff(
 }
 
 export let backoff = createBackoff({ onError: (e) => { console.warn(e); } });
+
+export function delayBreakable(ms: number) {
+    // We can cancel delay from outer code
+    let promiseResolver: ((value?: any | PromiseLike<any>) => void) | null = null;
+    let resolver = () => {
+        if (promiseResolver) {
+            promiseResolver();
+        }
+    };
+    let promise = new Promise(resolve => {
+        promiseResolver = resolve;
+        setTimeout(resolve, ms);
+    });
+    return { promise, resolver };
+}
+
+export function resumeKey(key: string) {
+    events.emit('pause-' + key);
+}
+
+export async function pauseWithKey(ms: number, key: string) {
+    let { promise, resolver } = delayBreakable(ms);
+    events.addListener('pause-' + key, resolver);
+    try {
+        await promise;
+    } finally {
+        events.removeListener('pause-' + key, resolver);
+    }
+}

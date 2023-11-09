@@ -1,3 +1,4 @@
+import { resumeKey } from "../utils/time";
 import { doInboxWrite } from "./doInboxWrite";
 import { inTx } from "./inTx";
 
@@ -84,6 +85,9 @@ export async function doSessionSend(id: string, token: string, text: string, isP
             where: { uid: id },
             data: { needAI: true }
         });
+
+        // Kick worker
+        resumeKey('session-updater');
 
         return {
             ok: true

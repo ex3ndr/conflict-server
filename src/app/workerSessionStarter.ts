@@ -1,5 +1,5 @@
 import { workInLock } from "../modules/lock/workInLock";
-import { delay } from "../utils/time";
+import { pauseWithKey } from "../utils/time";
 import { doSessionStart } from "./doSessionStart";
 import { inTx } from "./inTx";
 
@@ -11,13 +11,11 @@ export function workerSessionStarter() {
             return await tx.session.findFirst({ where: { state: 'JOINED', needAI: true } });
         });
         if (!session) {
-            await delay(1000);
+            await pauseWithKey(1000, 'session-starter');
             return;
         }
 
         // Start the session
         await doSessionStart(session);
-
-        await delay(1000);
     });
 }

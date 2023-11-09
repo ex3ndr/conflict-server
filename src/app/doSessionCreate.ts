@@ -1,4 +1,5 @@
 import { randomKey } from "../utils/randomKey";
+import { resumeKey } from "../utils/time";
 import { inTx } from "./inTx";
 
 export async function doSessionCreate(args: { nameA: string, nameB: string, description: string, repeatKey: string }): Promise<any> {
@@ -51,6 +52,9 @@ export async function doSessionCreate(args: { nameA: string, nameB: string, desc
             }
         });
     });
+
+    // Kick worker
+    resumeKey('session-starter');
 
     return {
         id: session.uid,

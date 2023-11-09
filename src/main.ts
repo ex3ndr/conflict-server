@@ -8,6 +8,7 @@ import { workerSessionStarter } from './app/workerSessionStarter';
 import { doSessionMessages } from './app/doSessionMessages';
 import { doSessionSend } from './app/doSessionSend';
 import { workerSessionUpdater } from './app/workserSessionUpdate';
+import { doSessionSubscribe } from './app/doSessionSubscribe';
 
 (async () => {
 
@@ -118,6 +119,52 @@ import { workerSessionUpdater } from './app/workserSessionUpdate';
                 } else {
                     res.send(result);
                 }
+            } catch (e) {
+                console.warn(e);
+                res.status(500).send('Internal error');
+            }
+        })();
+    });
+    app.post('/session/events', (req, res) => {
+        let id = (req.params as any).id as string;
+        let token = (req.params as any).token as string;
+        if (!id || !token) {
+            res.status(400).send({ ok: false, message: 'Invalid request' });
+            return;
+        }
+
+        (async () => {
+            try {
+
+                // Subscription
+                let handler = (event: any) => {
+                    res.write(`data: ${JSON.stringify(event)}\n\n`);
+                };
+
+                // Subscribe
+                let unsubscribe = await doSessionSubscribe(id, token, handler);
+
+                try {
+
+                    // Stream start (events cant be sent earlier because yield did not happen yet)
+                    res.writeHead(200, {
+                        'Content-Type': 'text/event-stream',
+                        Connection: 'keep-alive',
+                        'Cache-Control': 'no-cache',
+                    });
+
+                    // Await connection close
+                    await new Promise((resolve) => {
+                        req.on('close', () => {
+                            resolve(undefined);
+                        });
+                    });
+
+                } finally {
+                    // Unsubscribe
+                    unsubscribe();
+                }
+
             } catch (e) {
                 console.warn(e);
                 res.status(500).send('Internal error');

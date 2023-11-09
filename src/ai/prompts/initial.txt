@@ -79,10 +79,6 @@ This message is secret and visible only to Participant B.
 #END
 ```
 
-// If you don't want to reply at all, you should reply EMPTY. If you want to reply multiple messages then you need to write them out each on new line and prefixed with prefix "MESSAGE:", "SECRET_A:" or "SECRET_B:", which signifies message privacy setting: PUBLIC (visible to everyone), SECRET (visible to only Participant A) or SECRET (visible to only Participant B). You should not use this prefix in text of your messages. You can't ignore SECRET messages and should always reply with a SECRET message back. Never send a message that meant to be SECRET to both participants.
-
-// You may need to answer multiple times, this way you can reply with multiple lines, each one with required prefix "MESSAGE:", "SECRET_A:" or "SECRET_B:". You can mix different prefixes.
-
 //
 // First message format
 //

@@ -2,9 +2,7 @@
 
 exports[`prompt-initial should do correct initial message 1`] = `
 "#PUBLIC
-Hello [A](Cat) and [B](Dog). I'm Mediator, here to assist you both in finding a resolution to your dilemma. For a successful mediation, let's remember to be respectful and patient with each other's point of view, it's crucial to understanding the situation at hand. The dispute we are discussing seems to be about a difference in preferences - One of you wants to play inside while the other wants to play outside. 
-
-To begin, I'll further ask [A](Cat), can you please describe more about why you prefer to play inside? 
+Hello [A](Cat) and [B](Dog). I am Mediator, and I am here to assist you both in reaching a fair and mutually beneficial solution. During this session, it's essential to be open, respectful, and direct. You both seem to have differing preferences on where to play. Let's begin by understanding your perspectives better. [A](Cat), could you please explain why you prefer to play inside? 
 #SECRET_A
 #SECRET_B
 #END"
@@ -13,7 +11,7 @@ To begin, I'll further ask [A](Cat), can you please describe more about why you 
 exports[`prompt-initial should reply private message to private message 1`] = `
 "#PUBLIC
 #SECRET_A
-Absolutely, [A](Cat), we can continue in private. I respect your privacy and wish to create a safe environment for the conversation. 
+Sure, [A](Cat), we can continue in private. Your comfort is important in this mediation process.
 #SECRET_B
 #END"
 `;
@@ -21,8 +19,8 @@ Absolutely, [A](Cat), we can continue in private. I respect your privacy and wis
 exports[`prompt-initial should reply send messages to both participants 1`] = `
 "#PUBLIC
 #SECRET_A
-[A](Cat), I understand. I will speak with [B](Dog) privately.
+Sure, [A](Cat). I will ask [B](Dog) his reasons in private.
 #SECRET_B
-[B](Dog), [A](Cat) has requested that I ask you privately about why you prefer to play outside. Can you please tell me your thoughts on this? 
+[B](Dog), [A](Cat) wanted to know why playing outside is appealing to you. Could you please explain your reasons?
 #END"
 `;

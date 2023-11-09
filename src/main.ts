@@ -125,7 +125,7 @@ import { doSessionSubscribe } from './app/doSessionSubscribe';
             }
         })();
     });
-    app.post('/session/events', (req, res) => {
+    app.get('/session/events', (req, res) => {
         let id = (req.params as any).id as string;
         let token = (req.params as any).token as string;
         if (!id || !token) {

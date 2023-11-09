@@ -1,8 +1,8 @@
-import { createInitialMessage } from "./createInitialMessage";
+import { promptCreateInitial } from "./promptCreateInitial";
 
-describe('createInitialMessage', () => {
+describe('promptCreateInitial', () => {
     it('should create initial message', () => {
-        console.warn(createInitialMessage({
+        console.warn(promptCreateInitial({
             nameA: 'Cat',
             nameB: 'Dog',
             description: 'Cat wants to play inside, but Dog wants to play outside'

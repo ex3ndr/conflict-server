@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`prompt-example should create an example 1`] = `""Cat and Dog are fighting because Cat lost Dog's favorite toy.""`;

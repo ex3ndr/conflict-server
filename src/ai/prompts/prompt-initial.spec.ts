@@ -1,6 +1,6 @@
 import { executeOpenAI } from "../../modules/openai/openai";
 import { trimIndent } from "../../utils/text";
-import { createInitialMessage } from "../createInitialMessage";
+import { promptCreateInitial } from "../promptCreateInitial";
 
 describe('prompt-initial', () => {
     jest.setTimeout(60000);
@@ -9,7 +9,7 @@ describe('prompt-initial', () => {
         let nameA = 'Cat';
         let nameB = 'Dog';
         let description = 'Cat wants to play inside, but Dog wants to play outside';
-        let initialMessage = createInitialMessage({ nameA, nameB, description });
+        let initialMessage = promptCreateInitial({ nameA, nameB, description });
         let executed = await executeOpenAI([{
             role: 'system',
             content: initialMessage
@@ -22,7 +22,7 @@ describe('prompt-initial', () => {
         let nameA = 'Cat';
         let nameB = 'Dog';
         let description = 'Cat wants to play inside, but Dog wants to play outside';
-        let initialMessage = createInitialMessage({ nameA, nameB, description });
+        let initialMessage = promptCreateInitial({ nameA, nameB, description });
         let executed = await executeOpenAI([{
             role: 'system',
             content: initialMessage
@@ -48,7 +48,7 @@ describe('prompt-initial', () => {
         let nameA = 'Cat';
         let nameB = 'Dog';
         let description = 'Cat wants to play inside, but Dog wants to play outside';
-        let initialMessage = createInitialMessage({ nameA, nameB, description });
+        let initialMessage = promptCreateInitial({ nameA, nameB, description });
         let executed = await executeOpenAI([{
             role: 'system',
             content: initialMessage

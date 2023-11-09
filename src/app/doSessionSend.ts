@@ -72,7 +72,7 @@ export async function doSessionSend(id: string, token: string, text: string, isP
             }
         });
         if (!isPrivate) {
-            await doInboxWrite(tx, receiverInbox, {
+            let udpateReceiver = await doInboxWrite(tx, receiverInbox, {
                 sender: 'incoming',
                 date,
                 private: isPrivate,
@@ -81,7 +81,7 @@ export async function doSessionSend(id: string, token: string, text: string, isP
                     value: text
                 }
             });
-            doSessionPost(session.uid, side === 'a' ? 'b' : 'a', { type: 'update', update: updateSender });
+            doSessionPost(session.uid, side === 'a' ? 'b' : 'a', { type: 'update', update: udpateReceiver });
         }
 
         // Mark as AI needed
